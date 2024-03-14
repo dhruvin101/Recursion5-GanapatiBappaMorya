@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "";
+  }
+  
+  .container {
+    width: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
+    background-image: url(./images/background.png);
+    background-position: center;
+    background-size: cover;
+    padding: 0 7%;
+    color: #fff;
+  }
+  
+  nav {
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    margin-top: 10px;
+    padding-right: 5px;
+    width: 50px;
+    cursor: pointer;
+  }
+  
+  nav ul {
+    flex: 1;
+  }
+  
+  nav ul li {
+    display: inline-block;
+    margin: 25px 20px;
+  }
+  
+  nav ul li a {
+    color: #fff;
+    text-decoration: solid;
+  }
+  
+  nav .btn {
+    margin-top: 10px;
+    color: #fff;
+    text-decoration: solid;
+    border: 1px solid aqua;
+    padding: 8px 18px;
+    border-radius: 20px;
+  }
+  
+  .content {
+    margin-top: 12%;
+  }
+  .content h1 {
+    font-size: 50px;
+    margin-bottom: 15px;
+  }
+  
+  .content h1 span {
+    color: aqua;
+  }
+  
+  .content p {
+    list-style: 22px;
+    font-size: 12px;
+  }
+  
+  .content .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1px solid aqua;
+    background-color: 222;
+    color: aqua;
+    text-decoration: solid;
+  }
+  
+  .coinlist {
+    position: absolute;
+    right: 10%;
+    bottom: 50px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .coin {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin: 0 15px;
+    color: aqua;
+    border: 1px solid aqua;
+    padding: 20px 30px;
+    border-radius: 8px;
+  }
+  
+  .coin img {
+    width: 40px;
+    margin-right: 10px;
+  }
+  
+  .coin h2 {
+    color: #fff;
+    margin-bottom: 5px;
+  }
+  
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+  
+  .blue-glassmorphism {
+    background: rgb(39, 51, 89, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
