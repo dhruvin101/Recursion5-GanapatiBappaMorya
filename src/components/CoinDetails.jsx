@@ -10,6 +10,7 @@ import Header from './Header';
 import { TradingContext } from '../context/Trading';
 import { arrayUnion, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
+import toast from 'react-hot-toast';
 
 const CoinDetails = () => {
   const { user , userData } = useContext(TradingContext);
@@ -45,7 +46,10 @@ const CoinDetails = () => {
             maxThresholdVal : maxThresholdVal,
           })
         });
+        toast.success('Coin Added Successfully');
         console.log("Success");
+        setMinThresholdVal('');
+        setMAxThresholdVal('');
       }
     } 
     catch (error) {
