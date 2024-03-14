@@ -70,14 +70,13 @@ const Coins = () => {
   const btns = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <div className='bg-black text-white'>
+    <div className='bg-black text-white min-h-[100vh]'>
     <Header />
       <Container maxW={"container.xl"} >
         {loading ? <Loader /> : (
           <>
-            <FormLabel className='mx-auto'>Search for a currency</FormLabel>
-            <FormControl className='flex justify-center'>
-              <Input placeholder='Search' value={searchQuery} onChange={(e)=>setSearchQuery(e.target.value)} />
+            <FormControl className='flex justify-center gap-10'>
+              <Input placeholder='Search For Currency' value={searchQuery}  onChange={(e)=>setSearchQuery(e.target.value)} className='outline-none px-4 rounded-xl w-48 text-black placeholder:text-black' />
               <Button
                 mt={4}
                 colorScheme='teal'
@@ -88,6 +87,7 @@ const Coins = () => {
                   console.log("Button => ");
                   // setLoading(true);
                 }}
+                className='bg-blue-500 px-5 py-3 rounded-xl'
               >
                 Submit
               </Button>

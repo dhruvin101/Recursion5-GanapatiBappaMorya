@@ -1,14 +1,21 @@
 import { Badge, Box, Button, Container, HStack, Image, Progress, Radio, RadioGroup, Stat, StatArrow, StatHelpText, StatLabel, StatNumber, Text, VStack } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { server } from '../index';
 import Chart from './Chart';
 import ErrorComponent from './ErrorComponent';
 import Loader from './Loader';
 import Header from './Header';
+import { TradingContext } from '../context/Trading';
+import { arrayUnion, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase/firebase';
 
 const CoinDetails = () => {
+  const { user , userData } = useContext(TradingContext);
+  console.log(userData);
+
+  // if(userData?.)
 
   const [coin, setCoin] = useState({});
   const [loading, setLoading] = useState(true);
@@ -16,8 +23,35 @@ const CoinDetails = () => {
   const [currency, setCurrency] = useState("inr");
   const [days, setDays] = useState("24h");
   const [chartArray, setChartArray] = useState([]);
-  
+  const [minThresholdVal,setMinThresholdVal] = useState("");
+  const [maxThresholdVal,setMAxThresholdVal] = useState('');
+
   const params = useParams();
+  const clickAddHandler = async(e) =>{
+    e.preventDefault();
+    console.log("Hello => ");
+    // if(!thresholdVal) return;
+    console.log("Hello");
+    try {
+      if(user){
+        console.log(params);
+        // console.log(thresholdVal);
+        // console.log(user);
+        const docRef = doc(db, "coin",user.uid);
+        await updateDoc(docRef, {
+          data : arrayUnion({
+            coin : params,
+            thresholdVal : minThresholdVal,
+            maxThresholdVal : maxThresholdVal,
+          })
+        });
+        console.log("Success");
+      }
+    } 
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   const currencySymbol =
     currency === "inr" ? "₹" : currency === "eur" ? "€" : "$";
@@ -88,6 +122,15 @@ const CoinDetails = () => {
   return (
     <>
     <Header />
+    <div className='mb-10 flex flex-col items-center gap-10 '>
+        <button className={`bg-blue-700 text-white px-5 max-w-52 py-2 rounded-xl text-xl ${user ? 'cursor-pointer' : ' cursor-not-allowed'}`} onClick={clickAddHandler} > Add to Notification </button>
+        {
+          user ? <div className='flex justify-around w-full'>
+            <input type='text' placeholder='Enter Maximum threshold' className='outline-none px-2 border rounded-xl placeholder:text-black text-black text-xl w-60 py-1' value={minThresholdVal} onChange={(e)=>setMinThresholdVal(e.target.value)}/>
+            <input type='text' placeholder='Enter Minimum threshold' className='outline-none px-2 border rounded-xl placeholder:text-black text-black text-xl w-60 py-1' value={maxThresholdVal} onChange={(e)=>setMAxThresholdVal(e.target.value)}/>
+          </div> : <></>
+        }
+    </div>
         <Container maxW={"container.xl"} className='px-10 bg-white'>
           {
             loading?<Loader/>:(
@@ -111,34 +154,42 @@ const CoinDetails = () => {
               
               <RadioGroup value={currency} onChange={setCurrency} p={"8"}>
                <HStack spacing={"4"}>
-                <Radio value={'inr'} >INR</Radio>
-                <Radio value={'usd'} >USD</Radio>
-                <Radio value={'eur'} >EURO</Radio>
+              <Radio value={'inr'} className={`${currency == 'inr' ? 'text-xl text-blue-500' :''}`} >INR</Radio>
+                <Radio value={'usd'} className={`${currency == 'usd' ? 'text-xl text-blue-500' :''}`} >USD</Radio>
+                <Radio value={'eur'} className={`${currency == 'eur' ? 'text-xl text-blue-500' :''}`} >EURO</Radio>
               </HStack>
              </RadioGroup>
 
              <VStack spacing={"4"} p="16" alignItems={"flex-start"}>
-              <Text fontSize={"small"} alignSelf={"center"} opacity={"0.7"}>Last Updated on : {Date(coin.market_data.last_updated).split("G")[0]}</Text>
-              <Image src={coin.image.large} w={"100"} h={"100"} objectFit={"contain"}/>
-              <Stat>
-                <StatLabel className='text-xl'>{coin.name}</StatLabel>
-                <StatNumber className='text-xl'>{currencySymbol}{coin.market_data.current_price[currency]}</StatNumber>
-                <StatHelpText className='text-xl' >
-                  <StatArrow type={coin.market_data.price_change_percentage_24h > 0 ? "increase" : "decrease"} />
-                  {coin.market_data.price_change_percentage_24h}%
-                </StatHelpText>
-              </Stat>
+             <Text fontSize={"small"} alignSelf={"center"} opacity={"0.7"}>Last Updated on : {Date(coin.market_data.last_updated).split("G")[0]}</Text>
+              <div className='mx-auto pt-10'>
+                
+                <div className=''>
+                  <Image src={coin.image.large} w={"100"} h={"100"} objectFit={"contain"}/>
+                  <Stat>
+                    <StatLabel className='text-xl'>{coin.name}</StatLabel>
+                    <StatNumber className='text-xl'>{currencySymbol}{coin.market_data.current_price[currency]}</StatNumber>
+                    <StatHelpText className='text-xl' >
+                      <StatArrow type={coin.market_data.price_change_percentage_24h > 0 ? "increase" : "decrease"} />
+                      {coin.market_data.price_change_percentage_24h}%
+                    </StatHelpText>
+                  </Stat>
+                </div>
+                
+             
+              </div>
 
               {/* <Badge fontSize={"2xl"} bgColor={"blackAlpha.800"} color={"white"}>
                 {`#${coin.market_cap_rank}`}
               </Badge> */}
 
               {/* <CustomBar high={`${currencySymbol}${coin.market_data.high_24h[currency]}`} low={`${currencySymbol}${coin.market_data.low_24h[currency]}`} /> */}
-              <Box w={"full"} p="4" className='flex flex-col'>
+              <Box w={"50vw"} p="4" className='mx-auto px-20'>
                 {
                   coin.market_data.max_supply ?  <Item title={"Max Supply"} value={coin.market_data.max_supply} /> :<></>
 
                 }
+                
                 <Item title={"Circulating Supply"} value={coin.market_data.circulating_supply} />
                 <Item title={"Market Capital"} value={`${currencySymbol}${coin.market_data.market_cap[currency]}`} />
                 <Item title={"All Time Low"} value={`${currencySymbol}${coin.market_data.atl[currency]}`} />

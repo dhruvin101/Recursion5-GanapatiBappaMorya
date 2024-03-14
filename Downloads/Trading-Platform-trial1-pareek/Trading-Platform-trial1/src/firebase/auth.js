@@ -34,9 +34,9 @@ export async function login(email, password){
 export async function register(name,email,password){
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        console.log(userCredential);
         if(userCredential && userCredential.user){
-            console.log("start");
-            const docRef = doc(db, "user", userCredential.user.uid);
+            const docRef = doc(db, "coin", userCredential.user.uid);
            await setDoc(docRef, {
                 email:email,
                 name:name,

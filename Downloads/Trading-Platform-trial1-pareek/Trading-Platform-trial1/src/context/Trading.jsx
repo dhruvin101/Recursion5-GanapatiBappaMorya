@@ -61,11 +61,11 @@ function TradingContextProvider(props){
             if(user){
                 setLoading(true);
                 setUser(user);
-                const docRef = doc(db,"jatin",user.uid);
+                const docRef = doc(db,"coin",user.uid);
                 const docSnap = await getDoc(docRef);
                 setUserData(docSnap.data());
                 setUserNews(docSnap.data()?.data);
-                console.log("User Data => ",docSnap.data());
+                console.log("User Data => ",user);
                 setLoading(false);
             }
         })

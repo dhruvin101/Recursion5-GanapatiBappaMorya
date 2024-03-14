@@ -45,6 +45,9 @@ const Home = () => {
             </button>
           }
         </nav>
+          <div>
+            <p className='text-7xl -mb-20 tracking-wider font-medium mt-10 text-[#00FFFF]'> CoinPulse </p>
+          </div>
 
         <div class="content">
           <h1>
@@ -55,9 +58,9 @@ const Home = () => {
             Get the best exchange rates for your <br />
             currency and save money
           </p>
-          <a href="#" class="btn">
+          <NavLink to={'/coins'} className={'btn'}> 
             Exchange Now
-          </a>
+          </NavLink>
         </div>
 
         <div class="coinlist">
@@ -80,8 +83,8 @@ const Home = () => {
           <div class="coin">
             <img src={doge} alt="Dogecoin" />
             <div>
-              <h2>$597.54</h2>
-              <p>Binancecoin</p>
+              <h2>$0.19</h2>
+              <p>Dogecoin</p>
             </div>
           </div>
         </div>
